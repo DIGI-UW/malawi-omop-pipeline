@@ -1,0 +1,7 @@
+.cache/
+.ropeproject/
+.venv/
+.zed/
+config.yaml
+logs/
+*.pyc

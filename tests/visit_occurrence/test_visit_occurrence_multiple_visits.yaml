@@ -1,0 +1,36 @@
+test_visit_multiple_visits:
+  model: ghii_omop.visit_occurrence
+  inputs:
+    ohdl.encounter:
+      format: csv
+      rows: |
+        encounter_id,site_id,patient_id,encounter_datetime,voided
+        1,123,1,2024-01-01 12:00:00,0
+        2,123,1,2024-01-01 12:15:00,0
+        3,123,1,2024-01-01 12:30:00,0
+        4,123,1,2024-01-01 12:45:00,0
+        5,123,1,2024-01-02 12:00:00,0
+        6,123,1,2024-01-02 12:15:00,0
+        7,123,1,2024-01-02 12:30:00,0
+        8,123,1,2024-01-02 12:45:00,0
+      columns:
+        encounter_datetime: datetime
+  outputs:
+    query:
+      - visit_occurrence_id: 12381
+        person_id: 12381
+        visit_concept_id: 9202
+        visit_start_date: 2024-01-01
+        visit_start_datetime: 2024-01-01 12:00:00
+        visit_end_date: 2024-01-01
+        visit_end_datetime: 2024-01-01 12:45:00
+        visit_type_concept_id: 32817
+      - visit_occurrence_id: 12385
+        person_id: 12381
+        visit_concept_id: 9202
+        visit_start_date: 2024-01-02
+        visit_start_datetime: 2024-01-02 12:00:00
+        visit_end_date: 2024-01-02
+        visit_end_datetime: 2024-01-02 12:45:00
+        visit_type_concept_id: 32817
+        preceding_visit_occurrence_id: 12381

@@ -1,0 +1,32 @@
+gateways:
+  ghii-mysql:
+    connection:
+      # For more information on configuring the connection to your execution engine, visit:
+      # https://sqlmesh.readthedocs.io/en/stable/reference/configuration/#connections
+      # https://sqlmesh.readthedocs.io/en/stable/integrations/engines/mysql/#connection-options
+      type: mysql
+      host:
+      port:
+      user:
+      password:
+    state_connection:
+      type: mysql
+      host:
+      port:
+      user:
+      password:
+    test_connection:
+      type: mysql
+      host:
+      port:
+      user:
+      password:
+
+
+
+default_gateway: ghii-mysql
+
+model_defaults:
+  dialect: mysql
+
+disable_anonymized_analytics: true

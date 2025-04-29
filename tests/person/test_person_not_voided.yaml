@@ -1,0 +1,27 @@
+test_person_not_voided:
+  model: ghii_omop.person
+  inputs:
+    ohdl.person:
+      format: csv
+      rows: |
+        person_id,site_id,gender,birthdate,voided
+        1,123,,,0
+        2,123,,,1
+      columns:
+        gender: varchar(50)
+        birthdate: datetime
+        voided: int
+    ohdl.patient:
+      format: csv
+      rows: |
+        patient_id,site_id
+        1,123
+        2,123
+  outputs:
+    query:
+      rows:
+        - person_id: 12381
+          person_source_value: 123-1
+          race_concept_id: 0
+          ethnicity_concept_id: 0
+          location_id: 123

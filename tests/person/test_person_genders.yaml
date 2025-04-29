@@ -1,0 +1,70 @@
+test_person_genders:
+  model: ghii_omop.person
+  inputs:
+    ohdl.person:
+      format: csv
+      rows: |
+        person_id,site_id,gender,birthdate,voided
+        1,123,M,2020-04-01,0
+        2,123,Male,2020-04-01,0
+        3,123,F,2020-04-01,0
+        4,123,Female,2020-04-01,0
+      columns:
+        gender: varchar(50)
+        birthdate: datetime
+        voided: int
+    ohdl.patient:
+      format: csv
+      rows: |
+        patient_id,site_id
+        1,123
+        2,123
+        3,123
+        4,123
+  outputs:
+    query:
+      rows:
+        - person_id: 12381
+          gender_concept_id: 8507
+          year_of_birth: 2020
+          month_of_birth: 4
+          day_of_birth: 1
+          birth_datetime: 2020-04-01
+          race_concept_id: 0
+          ethnicity_concept_id: 0
+          location_id: 123
+          person_source_value: 123-1
+          gender_source_value: M
+        - person_id: 12382
+          gender_concept_id: 8507
+          year_of_birth: 2020
+          month_of_birth: 4
+          day_of_birth: 1
+          birth_datetime: 2020-04-01
+          race_concept_id: 0
+          ethnicity_concept_id: 0
+          location_id: 123
+          person_source_value: 123-2
+          gender_source_value: Male
+        - person_id: 12383
+          gender_concept_id: 8532
+          year_of_birth: 2020
+          month_of_birth: 4
+          day_of_birth: 1
+          birth_datetime: 2020-04-01
+          race_concept_id: 0
+          ethnicity_concept_id: 0
+          location_id: 123
+          person_source_value: 123-3
+          gender_source_value: F
+        - person_id: 12384
+          gender_concept_id: 8532
+          year_of_birth: 2020
+          month_of_birth: 4
+          day_of_birth: 1
+          birth_datetime: 2020-04-01
+          race_concept_id: 0
+          ethnicity_concept_id: 0
+          location_id: 123
+          person_source_value: 123-4
+          gender_source_value: Female
