@@ -4,12 +4,13 @@ test_person_site_ids:
     ohdl.person:
       format: csv
       rows: |
-        person_id,site_id,gender,birthdate,voided
-        1,123,,,0
-        1,654,,,0
+        person_id,site_id,gender,birthdate,birthdate_estimated,voided
+        1,123,,,,0
+        1,654,,,,0
       columns:
         gender: varchar(50)
         birthdate: datetime
+        birthdate_estimated: int
         voided: int
     ohdl.patient:
       format: csv

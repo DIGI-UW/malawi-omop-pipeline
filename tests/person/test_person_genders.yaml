@@ -4,11 +4,11 @@ test_person_genders:
     ohdl.person:
       format: csv
       rows: |
-        person_id,site_id,gender,birthdate,voided
-        1,123,M,2020-04-01,0
-        2,123,Male,2020-04-01,0
-        3,123,F,2020-04-01,0
-        4,123,Female,2020-04-01,0
+        person_id,site_id,gender,birthdate,birthdate_estimated,voided
+        1,123,M,2020-04-01,0,0
+        2,123,Male,2020-04-01,0,0
+        3,123,F,2020-04-01,0,0
+        4,123,Female,2020-04-01,0,0
       columns:
         gender: varchar(50)
         birthdate: datetime
