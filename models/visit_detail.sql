@@ -33,7 +33,7 @@ MODEL (
 -- We use the visit_detail page to map each encounter. There are two expensive
 -- calculations: one to link each visit detail to the preceding detail, which
 -- is done with the LAG function, and the other to link the visit detail to its
--- corresponding visit_occurrence, which is done as a post-load step
+-- corresponding visit_occurrence
 WITH encounters AS (
   SELECT *
   FROM ohdl.encounter e
@@ -72,10 +72,20 @@ SELECT
       )
       ELSE NULL
   END                        AS preceding_visit_detail_id,
-  CAST(NULL as BIGINT)       AS visit_occurrence_id
+  v.visit_occurrence_id      AS visit_occurrence_id
 FROM encounters e
   JOIN ohdl.encounter_type et ON
     e.encounter_type = et.encounter_type_id
+  JOIN ghii_omop.visit_occurrence v ON
+    CAST(
+      CONCAT(
+        e.site_id,
+        '8',
+        e.patient_id
+      ) as INTEGER
+    ) = v.person_id
+  AND
+    e.encounter_datetime BETWEEN v.visit_start_datetime AND v.visit_end_datetime
 GROUP BY
   CAST(
     CONCAT(
@@ -106,13 +116,3 @@ WINDOW w AS (PARTITION BY e.site_id, e.patient_id, DATE(e.encounter_datetime) OR
   @runtime_stage = 'evaluating',
   CREATE INDEX visit_detail_person_id_datetime ON @resolve_template('@{schema_name}.@{table_name}#properties', mode := 'table') (person_id, visit_detail_start_datetime, visit_detail_end_datetime)
 );
-
--- here we fill in the visit_occurrence_id by identifying the appropriate visit from the visit_occurrence table
-ON_VIRTUAL_UPDATE_BEGIN;
-UPDATE @resolve_template('@{schema_name}.@{table_name}#properties', mode := 'table') vd
-  JOIN ghii_omop.visit_occurrence v ON
-    vd.person_id = v.person_id AND
-    vd.visit_detail_start_datetime BETWEEN v.visit_start_datetime and v.visit_end_datetime
-SET vd.visit_occurrence_id = v.visit_occurrence_id
-WHERE vd.visit_occurrence_id IS NULL;
-ON_VIRTUAL_UPDATE_END;

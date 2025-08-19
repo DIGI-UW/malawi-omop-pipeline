@@ -3,8 +3,12 @@ test_visit_detail_simple:
   inputs:
     ghii_omop.visit_occurrence:
       format: csv
-      rows:
+      rows: |
         visit_occurrence_id,person_id,visit_start_datetime,visit_end_datetime
+        12381,12381,2024-01-01 12:00:00,2024-01-01 12:00:00
+      columns:
+        visit_start_datetime: datetime
+        visit_end_datetime: datetime
     ohdl.encounter:
       format: csv
       rows: |
@@ -28,3 +32,4 @@ test_visit_detail_simple:
         visit_detail_end_datetime: 2024-01-01 12:00:00
         visit_detail_type_concept_id: 32817
         visit_detail_source_value: Encounter
+        visit_occurrence_id: 12381

@@ -67,7 +67,7 @@ SELECT
       )
     ELSE
       NULL
-  END                AS preceding_visit_occurrence_id
+  END                 AS preceding_visit_occurrence_id
 FROM visits v
 GROUP BY
   CAST(

@@ -131,7 +131,7 @@ SELECT
   32833                       AS drug_type_concept_id, -- EHR Order
   d.quantity                  AS quantity,
   4132161                     AS route_concept_id, -- Oral
-  CAST(NULL as INTEGER)       AS visit_occurrence_id,
+  vd.visit_occurrence_id      AS visit_occurrence_id,
   CAST(
     CONCAT(
       o.site_id,
@@ -149,6 +149,14 @@ FROM
   LEFT JOIN ohdl.drug_order d
     ON o.order_id = d.order_id
    AND o.site_id = d.site_id
+  JOIN ghii_omop.visit_detail vd
+    ON CAST(
+      CONCAT(
+        o.site_id,
+        '8',
+        o.encounter_id
+      ) AS INTEGER
+    ) = vd.visit_detail_id
 WHERE
   o.voided = 0;
 
@@ -172,13 +180,3 @@ WHERE
   @runtime_stage = 'evaluating',
   CREATE INDEX drug_exposure_person_id_datetime ON @resolve_template('@{schema_name}.@{table_name}#properties', mode := 'table') (person_id, drug_exposure_start_datetime, drug_exposure_end_datetime)
 );
-
--- here we fill in the visit_occurrence_id by identifying the appropriate visit from the visit_detail table
-ON_VIRTUAL_UPDATE_BEGIN;
-UPDATE @resolve_template('@{schema_name}.@{table_name}#properties', mode := 'table') de
-  JOIN ghii_omop.visit_detail vd ON
-    de.person_id = vd.person_id AND
-    de.visit_detail_id = vd.visit_detail_id
-SET de.visit_occurrence_id = vd.visit_occurrence_id
-WHERE de.visit_occurrence_id IS NULL;
-ON_VIRTUAL_UPDATE_END;
