@@ -1,6 +1,7 @@
 .cache/
 .ropeproject/
 .venv/
+.vscode/
 .zed/
 config.yaml
 logs/

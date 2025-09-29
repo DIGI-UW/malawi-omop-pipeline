@@ -22,8 +22,6 @@ gateways:
       user:
       password:
 
-
-
 default_gateway: ghii-mysql
 
 model_defaults:
