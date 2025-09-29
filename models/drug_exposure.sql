@@ -104,29 +104,74 @@ SELECT
   END                         AS drug_concept_id,
   DATE(o.start_date)          AS drug_exposure_start_date,
   o.start_date                AS drug_exposure_start_datetime,
-  DATE(
-    COALESCE(
-      o.auto_expire_date,
-      o.discontinued_date,
-      DATE_ADD(
-        o.start_date,
-        INTERVAL d.quantity DAY
+  IF(
+    DATE(
+      LEAST(
+        COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+        COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+        IF(
+          d.quantity is not null and d.quantity >= 1,
+          DATE_ADD(
+            o.start_date,
+            INTERVAL d.quantity - 1 DAY
+          ),
+          CAST('9999-12-31 23:59:59' AS DATETIME)
+        )
       )
-    )
+    ) < CAST('9999-12-31 23:59:59' AS DATETIME),
+    DATE(
+      LEAST(
+        COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+        COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+        IF(
+          d.quantity is not null and d.quantity >= 1,
+          DATE_ADD(
+            o.start_date,
+            INTERVAL d.quantity - 1 DAY
+          ),
+          CAST('9999-12-31 23:59:59' AS DATETIME)
+        )
+      )
+    ),
+    NULL
   )                           AS drug_exposure_end_date,
-  COALESCE(
-    o.auto_expire_date,
-    o.discontinued_date,
-    DATE_ADD(
-      o.start_date,
-      INTERVAL d.quantity DAY
-    )
+  IF(
+    LEAST(
+      COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      IF(
+        d.quantity is not null and d.quantity >= 1,
+        DATE_ADD(
+          o.start_date,
+          INTERVAL d.quantity - 1 DAY
+        ),
+        CAST('9999-12-31 23:59:59' AS DATETIME)
+      )
+    ) < CAST('9999-12-31 23:59:59' AS DATETIME),
+    LEAST(
+      COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      IF(
+        d.quantity is not null and d.quantity >= 1,
+        DATE_ADD(
+          o.start_date,
+          INTERVAL d.quantity - 1 DAY
+        ),
+        CAST('9999-12-31 23:59:59' AS DATETIME)
+      )
+    ),
+    NULL
   )                           AS drug_exposure_end_datetime,
-  CAST(
-    COALESCE(
-      o.auto_expire_date,
-      o.discontinued_date
-    ) AS NCHAR
+  IF(
+    LEAST(
+      COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME))
+    ) < CAST('9999-12-31 23:59:59' AS DATETIME),
+    LEAST(
+      COALESCE(o.auto_expire_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
+      COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME))
+    ),
+    NULL
   )                           AS verbatim_end_date,
   32833                       AS drug_type_concept_id, -- EHR Order
   d.quantity                  AS quantity,

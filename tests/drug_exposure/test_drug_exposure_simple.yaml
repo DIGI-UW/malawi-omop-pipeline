@@ -1,0 +1,102 @@
+test_drug_exposure_simple:
+  model: ghii_omop.drug_exposure
+  inputs:
+    ohdl.orders:
+      format: csv
+      rows: |
+        order_id,site_id,patient_id,concept_id,encounter_id,start_date,auto_expire_date,discontinued_date,voided
+        1,123,1,625,1,2024-01-01 00:00:00,,,0
+        2,123,2,633,2,2024-01-15 00:00:00,2024-02-10 00:00:00,,0
+        3,123,3,792,3,2024-02-01 00:00:00,,2024-02-15 00:00:00,0
+        4,123,4,625,4,2024-02-05 00:00:00,2024-03-09 00:00:00,2024-02-28 00:00:00,0
+        5,123,5,625,5,2024-02-05 00:00:00,2024-03-09 00:00:00,2024-03-08 00:00:00,0
+      columns:
+        auto_expire_date: datetime
+        discontinued_date: datetime
+    ohdl.drug_order:
+      format: csv
+      rows: |
+        order_id,site_id,quantity
+        1,123,30
+        2,123,30
+        3,123,30
+        4,123,30
+        5,123,10
+    ohdl.concept_set:
+      format: csv
+      rows: |
+        concept_set,concept_id
+        1085,625
+        1085,628
+        1085,630
+        1085,631
+        1085,633
+        1085,635
+        1085,792
+        1086,9939
+    ghii_omop.visit_detail:
+      format: csv
+      rows: |
+        visit_detail_id,visit_occurrence_id
+        12381,12381
+        12382,12382
+        12383,12383
+        12384,12384
+  outputs:
+    query:
+      - drug_exposure_id: 12381
+        person_id: 12381
+        drug_concept_id: 40079018
+        drug_exposure_start_date: 2024-01-01
+        drug_exposure_start_datetime: 2024-01-01 00:00:00
+        drug_exposure_end_date: 2024-01-30
+        drug_exposure_end_datetime: 2024-01-30 00:00:00
+        verbatim_end_date:
+        drug_type_concept_id: 32833
+        quantity: 30
+        route_concept_id: 4132161
+        visit_occurrence_id: 12381
+        visit_detail_id: 12381
+        drug_source_value: 625
+      - drug_exposure_id: 12382
+        person_id: 12382
+        drug_concept_id: 40058384
+        drug_exposure_start_date: 2024-01-15
+        drug_exposure_start_datetime: 2024-01-15 00:00:00
+        drug_exposure_end_date: 2024-02-10
+        drug_exposure_end_datetime: 2024-02-10 00:00:00
+        verbatim_end_date: 2024-02-10 00:00:00
+        drug_type_concept_id: 32833
+        quantity: 30
+        route_concept_id: 4132161
+        visit_occurrence_id: 12382
+        visit_detail_id: 12382
+        drug_source_value: 633
+      - drug_exposure_id: 12383
+        person_id: 12383
+        drug_concept_id: 40173162
+        drug_exposure_start_date: 2024-02-01
+        drug_exposure_start_datetime: 2024-02-01 00:00:00
+        drug_exposure_end_date: 2024-02-15
+        drug_exposure_end_datetime: 2024-02-15 00:00:00
+        verbatim_end_date: 2024-02-15 00:00:00
+        drug_type_concept_id: 32833
+        quantity: 30
+        route_concept_id: 4132161
+        visit_occurrence_id: 12383
+        visit_detail_id: 12383
+        drug_source_value: 792
+      - drug_exposure_id: 12384
+        person_id: 12384
+        drug_concept_id: 40079018
+        drug_exposure_start_date: 2024-02-05
+        drug_exposure_start_datetime: 2024-02-05 00:00:00
+        drug_exposure_end_date: 2024-02-28
+        drug_exposure_end_datetime: 2024-02-28 00:00:00
+        verbatim_end_date: 2024-02-28 00:00:00
+        drug_type_concept_id: 32833
+        quantity: 30
+        route_concept_id: 4132161
+        visit_occurrence_id: 12384
+        visit_detail_id: 12384
+        drug_source_value: 625

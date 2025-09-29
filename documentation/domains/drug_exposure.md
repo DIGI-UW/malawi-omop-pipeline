@@ -59,7 +59,7 @@ which differs from the RxNorm code.
 ### Notes
 
 \* Didanosine is coded to "Chewable tablet"
-\** Tenofovir is mapped to tenofovir disoproxil as tenofovir alafenamide is less widely available
+\*\* Tenofovir is mapped to tenofovir disoproxil as tenofovir alafenamide is less widely available
 \*\*\* These are not mappable in Athena
 \*\*\*\* Unclear how 8729 differs from 1610; these are mapped identically here
 \*\*\*\*\* Raltegravir has a specified strength in OHDL; this is ignored

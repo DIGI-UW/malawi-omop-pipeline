@@ -1,0 +1,59 @@
+test_visit_detail_multiple_encounters:
+  model: ghii_omop.visit_detail
+  inputs:
+    ohdl.encounter:
+      format: csv
+      rows: |
+        encounter_id,site_id,patient_id,encounter_type,encounter_datetime,voided
+        1,123,1,1,2024-01-01 12:00:00,0
+        2,123,1,1,2024-01-01 12:15:00,0
+        3,123,1,1,2024-01-01 12:30:00,0
+      columns:
+        encounter_datetime: datetime
+    ohdl.encounter_type:
+      format: csv
+      rows: |
+        encounter_type_id,name
+        1,Encounter
+    ghii_omop.visit_occurrence:
+      format: csv
+      rows: |
+        visit_occurrence_id,person_id,visit_start_datetime,visit_end_datetime
+        12381,12381,2024-01-01 12:00:00,2024-01-01 12:30:00
+      columns:
+        visit_start_datetime: datetime
+        visit_end_datetime: datetime
+  outputs:
+    query:
+      - visit_detail_id: 12381
+        person_id: 12381
+        visit_detail_concept_id: 9202
+        visit_detail_start_date: 2024-01-01
+        visit_detail_start_datetime: 2024-01-01 12:00:00
+        visit_detail_end_date: 2024-01-01
+        visit_detail_end_datetime: 2024-01-01 12:00:00
+        visit_detail_type_concept_id: 32817
+        visit_detail_source_value: Encounter
+        visit_occurrence_id: 12381
+      - visit_detail_id: 12382
+        person_id: 12381
+        visit_detail_concept_id: 9202
+        visit_detail_start_date: 2024-01-01
+        visit_detail_start_datetime: 2024-01-01 12:15:00
+        visit_detail_end_date: 2024-01-01
+        visit_detail_end_datetime: 2024-01-01 12:15:00
+        visit_detail_type_concept_id: 32817
+        visit_detail_source_value: Encounter
+        visit_occurrence_id: 12381
+        preceding_visit_detail_id: 12381
+      - visit_detail_id: 12383
+        person_id: 12381
+        visit_detail_concept_id: 9202
+        visit_detail_start_date: 2024-01-01
+        visit_detail_start_datetime: 2024-01-01 12:30:00
+        visit_detail_end_date: 2024-01-01
+        visit_detail_end_datetime: 2024-01-01 12:30:00
+        visit_detail_type_concept_id: 32817
+        visit_detail_source_value: Encounter
+        visit_occurrence_id: 12381
+        preceding_visit_detail_id: 12382
