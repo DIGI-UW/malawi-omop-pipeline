@@ -86,14 +86,6 @@ FROM encounters e
     ) = v.person_id
   AND
     e.encounter_datetime BETWEEN v.visit_start_datetime AND v.visit_end_datetime
-GROUP BY
-  CAST(
-    CONCAT(
-      e.site_id,
-      '8',
-      e.encounter_id
-    ) AS INTEGER
-  )
 WINDOW w AS (PARTITION BY e.site_id, e.patient_id, DATE(e.encounter_datetime) ORDER BY e.encounter_datetime ASC);
 
 @IF(

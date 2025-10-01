@@ -38,23 +38,6 @@ WITH deaths as (
   WHERE pp.voided = 0
     AND pp.program_id = 1      -- Only HIV patients
     AND pws.concept_id = 1742  -- 1742 - Death
-  UNION
-  SELECT DISTINCT
-    p.site_id,
-    pt.patient_id,
-    p.death_date as death_date
-  FROM ohdl.person p
-  JOIN ohdl.patient pt
-    ON p.person_id = pt.patient_id
-   AND p.site_id = pt.site_id
-   AND pt.voided = 0
-  JOIN ohdl.patient_program pp
-    ON p.site_id = pp.site_id
-   AND p.person_id = pp.patient_id
-   AND pp.voided = 0
-   AND pp.program_id = 1
-  WHERE p.voided = 0
-    AND (p.dead = 1 or p.death_date is not null)
 )
 SELECT
   CAST(
@@ -68,7 +51,13 @@ SELECT
   d.death_date                AS death_datetime,
   32817                       AS death_type_concept_id  -- 32817 = EHR
 FROM deaths d
-GROUP BY d.site_id, d.patient_id;
+WHERE d.death_date = (
+  SELECT MIN(d2.death_date)
+  FROM deaths d2
+  WHERE d2.site_id = d.site_id
+    AND d2.patient_id = d.patient_id
+)
+GROUP BY d.site_id, d.patient_id, d.death_date;
 
 @IF(
   @runtime_stage = 'evaluating',

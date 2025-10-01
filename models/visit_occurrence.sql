@@ -69,14 +69,6 @@ SELECT
       NULL
   END                 AS preceding_visit_occurrence_id
 FROM visits v
-GROUP BY
-  CAST(
-    CONCAT(
-      v.site_id,
-      '8',
-      v.encounter_id
-    ) AS BIGINT
-  )
 WINDOW w AS (PARTITION BY v.site_id, v.patient_id ORDER BY v.start_date ASC);
 
 @IF(

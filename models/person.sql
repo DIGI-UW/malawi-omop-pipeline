@@ -66,15 +66,7 @@ FROM
     JOIN ohdl.patient AS pt
       ON p.person_id = pt.patient_id
      AND p.site_id = pt.site_id
-WHERE p.voided = 0
-GROUP BY
-  CAST(
-    CONCAT(
-      p.site_id,
-      '8',
-      p.person_id
-    ) AS BIGINT
-  );
+WHERE p.voided = 0;
 
 @IF(
   @runtime_stage = 'evaluating',
