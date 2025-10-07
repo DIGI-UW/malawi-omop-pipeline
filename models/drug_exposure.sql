@@ -153,10 +153,10 @@ SELECT
       COALESCE(o.discontinued_date, CAST('9999-12-31 23:59:59' AS DATETIME)),
       IF(
         d.quantity is not null and d.quantity >= 1,
-        DATE_ADD(
+        CAST(DATE_ADD(
           o.start_date,
           INTERVAL d.quantity - 1 DAY
-        ),
+        ) AS DATETIME),
         CAST('9999-12-31 23:59:59' AS DATETIME)
       )
     ),

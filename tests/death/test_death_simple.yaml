@@ -11,6 +11,7 @@ test_death_simple:
         4,123,0,,1
         5,123,0,,0
         6,123,0,,0
+        7,123,0,2025-02-15 00:00:00,0
       columns:
         death_date: datetime
     ohdl.patient:
@@ -23,6 +24,7 @@ test_death_simple:
         4,123,0
         5,123,1
         6,123,0
+        7,123,0
     ohdl.patient_program:
       format: csv
       rows: |
@@ -33,16 +35,18 @@ test_death_simple:
         4,1,4,123,0
         5,1,5,123,0
         6,2,6,123,0
+        7,1,7,123,0
     ohdl.patient_state:
       format: csv
       rows: |
         patient_program_id,site_id,voided,state,start_date
         1,123,0,1,2025-02-15 00:00:00
         2,123,0,1,2025-02-15 00:00:00
-        3,123,0,2,2025-02-15 00:00:00
+        3,123,0,1,2025-02-15 00:00:00
         4,123,0,1,2025-01-01 00:00:00
         5,123,0,1,2025-01-01 00:00:00
         6,123,0,1,2025-01-01 00:00:00
+        7,123,0,2,2025-01-01 00:00:00
     ohdl.program_workflow_state:
       format: csv
       rows: |
