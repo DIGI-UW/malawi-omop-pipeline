@@ -9,12 +9,6 @@ gateways:
       port:
       user:
       password:
-    state_connection:
-      type: mysql
-      host:
-      port:
-      user:
-      password:
     test_connection:
       type: mysql
       host:

@@ -12,12 +12,24 @@ In order to install and use the project you will need to have [Python 3.13](http
 uv sync
 ```
 
+This will configure a local Python virtual environment with all the dependencies, including SQLMesh.
+
+## Setting up SQLMesh
+
+Before SQLMesh can be run, it needs to be configured to correctly connect to the database. The easiest way to do this is to edit the `config.template.yaml` file, fill in the `host`, `port`, `user`, and `password` properties for the connection to the database and save the resulting file as `config.yaml`.
+
+Alternatively, you can run `uv run sqlmesh init -t empty mysql` and edit the resulting `config.yaml` file. If you go this route, you will need to add a `test_connection` element at the same level as the `connection` element with the same configuration as the `connection` element to ensure that tests are run on MySQL.
+
+**NB** The tests and transforms here are designed to be run on MySQL only and generally will not work on other databases.
+
+## Finishing Setup
+
 To ensure the environment is setup correctly. From there, you should be able to run the [SQLMesh CLI](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/) as normal or via `uv run`, e.g.,
 
 ```bash
-uv run sqlmesh plan
+uv run sqlmesh -p . plan
 # or
-sqlmesh plan
+sqlmesh plan -p .
 ```
 
 ## Working with sqlmesh
@@ -25,13 +37,13 @@ sqlmesh plan
 In order to run the pipelines, you can simply use the command:
 
 ```bash
-sqlmesh plan
+sqlmesh plan -p .
 ```
 
 Or, to only run the pipeline for a specific model, use:
 
 ```bash
-sqlmesh plan ghii_omop.visit_occurrence
+sqlmesh plan -p . ghii_omop.visit_occurrence
 ```
 
 Note that currently, all models are implemented using SQLMesh's [FULL](https://sqlmesh.readthedocs.io/en/stable/concepts/models/model_kinds/#full) kind, which means that each run will process all data for the domain in OHDL.
