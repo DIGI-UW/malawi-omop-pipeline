@@ -1,5 +1,6 @@
 MODEL (
   name ghii_omop.death,
+  start '2025-10-07',
   kind FULL,
   grain person_id,
   audits(

@@ -1,5 +1,6 @@
 MODEL (
   name ghii_omop.drug_exposure,
+  start '2025-10-07',
   kind FULL,
   grain drug_exposure_id,
   columns (

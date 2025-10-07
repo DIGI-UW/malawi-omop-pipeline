@@ -1,5 +1,6 @@
 MODEL (
   name ghii_omop.visit_detail,
+  start '2025-10-07',
   kind FULL,
   grain visit_detail_id,
   depends_on (ghii_omop.visit_occurrence),
